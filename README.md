@@ -32,9 +32,11 @@ With simple clicks, hiring managers can find potential candidates and conduct in
 | Frew Weldemariam |https://github.com/FruitsOfGlory1|  JavaScript, PHP, Java, Python, SQL  |
 
 ## Technologies Used: 
-Frontend : HTML, CSS, JAVASCRIPT, React.
-Backend: Node Js, Express Js.
-Database: Firebaseé
+-Frontend : HTML, CSS, JAVASCRIPT, React.
+
+-Backend: Node.Js, Express.Js.
+
+-Database: Firebase.
 
 ## Project Approach: 
 There are many ways to build a website, but our team will have the following approach:
