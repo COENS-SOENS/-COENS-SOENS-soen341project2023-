@@ -1,6 +1,6 @@
 import './App.css';
 import { useEffect } from 'react';
-import NavBar from './navigationBar';
+import NavBar from './Componenets/navigationBar';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home'
 import SignIn from './pages/SignIn';
