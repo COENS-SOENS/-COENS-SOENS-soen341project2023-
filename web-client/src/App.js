@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Dashboard from './pages/dashboard';
+import UserProfile from './pages/UserProfile';
 import { UserAuthContextProvider } from "./firebase/UserAuthContext";
 import ProtectedRoute from "./firebase/protectedRoute";
 
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/sign-in" element={<SignIn/>} />
         <Route path="/sign-up" element={<SignUp/>} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
+        <Route path="/UserProfile" element = {<ProtectedRoute><UserProfile></UserProfile></ProtectedRoute>}/>
       </Routes>
       </UserAuthContextProvider>
 
