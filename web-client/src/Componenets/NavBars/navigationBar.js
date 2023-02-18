@@ -7,8 +7,18 @@ function NavBar() {
       EmployMe
     </Link>
     <ul>
-        <CustomLink to="/sign-up">Sign Up</CustomLink>
-        <CustomLink to="/sign-in">Sign In</CustomLink>
+    <CustomLink to="/Home">
+            Home <i className=' fa-solid fa-house-user'></i> 
+          </CustomLink>
+          <CustomLink to="/Services">
+            Services <i className="fa-solid fa-bell-concierge"></i>
+          </CustomLink>
+          <CustomLink to="/sign-up">
+            Sign Up <i className="fa-solid fa-address-card"></i>
+          </CustomLink>
+          <CustomLink to="/sign-in">
+            Sign In <i className="fa-solid fa-right-to-bracket"></i>
+            </CustomLink>
     </ul>
     </nav>
   )

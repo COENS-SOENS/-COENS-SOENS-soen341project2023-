@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import NavBar from '../navigationBar';
+import NavBar from '../Componenets/NavBars/navigationBar';
 import {Button} from 'react-bootstrap';
 import { useUserAuth } from '../firebase/UserAuthContext';
 
