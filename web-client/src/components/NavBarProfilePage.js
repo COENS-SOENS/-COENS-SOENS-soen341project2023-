@@ -9,19 +9,26 @@ import { Link } from 'react-router-dom';
 import { SideBar } from './SideBar';
 import './NavBarProfilePage.css';
 import { IconContext } from 'react-icons';
-
-function NavBarProfilePage() {
+export default
+function NavBarProfilePage({ onSidebarClick }) {
     const [sidebar, setSidebar] = useState(false);
 
     const showSidebar = () => setSidebar(!sidebar);
 
+    function handleClick(item) {
+        item.handleClick(onSidebarClick);
+        showSidebar();
+    }
+
     return (
         <>
-            <IconContext.Provider value={{ color: '#ffff' }}>
-                <div className='navbar'>
+            <IconContext.Provider value={{ color: 'white' }}>
+                <div className='navBarProfilePage'>
                     <Link to='#' className='menu-bars'>
                         <FaIcons.FaBars onClick={showSidebar} />
                     </Link>
+                    <Link to='/dashboard' onClick={() => onSidebarClick('Dashboard')}>Dashboard</Link>
+                    <Link to='/MyProfile' onClick={() => onSidebarClick('My Profile')}>MyProfile</Link>
                 </div>
                 <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                     <ul className='nav-menu-items' onClick={showSidebar}>
@@ -32,7 +39,7 @@ function NavBarProfilePage() {
                         </li>
                         {SideBar.map((item, index) => {
                             return (
-                                <li key={index} className={item.cName}>
+                                <li key={index} className={item.cName} onClick={() => handleClick(item)}>
                                     <Link to={item.path}>
                                         {item.icon}
                                         <span>{item.title}</span>
@@ -46,5 +53,3 @@ function NavBarProfilePage() {
         </>
     );
 }
-
-export default NavBarProfilePage;

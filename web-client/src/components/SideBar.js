@@ -9,30 +9,35 @@ export const SideBar = [
         title: 'My Job Feed',
         path: '/',
         icon: <CgIcons.CgWorkAlt />,
-        cName: 'nav-text'
+        cName: 'nav-text',
+        handleClick: (onSidebarClick) => onSidebarClick('My Job Feed'),
     },
     {
         title: 'My Profile',
         path: '/',
         icon: <CgIcons.CgProfile />,
-        cName: 'nav-text'        
+        cName: 'nav-text',  
+        handleClick: (onSidebarClick) => onSidebarClick('My Profile')      
     },
     {
         title: 'Dashboard',
         path: '/',
         icon: <RxIcons.RxDashboard />,
-        cName: 'nav-text'
+        cName: 'nav-text',
+        handleClick: (onSidebarClick) => onSidebarClick('Dashboard')
     },
     {
         title: 'Saved Jobs',
         path: '/',
         icon: <CiIcons.CiSaveDown2 />,
-        cName: 'nav-text'
+        cName: 'nav-text',
+        handleClick: (onSidebarClick) => onSidebarClick('Saved Jobs')
     },
     {
         title: 'Settings',
         path: '/',
         icon: <FiIcons.FiSettings />,
-        cName: 'nav-text'
+        cName: 'nav-text',
+        handleClick: (onSidebarClick) => onSidebarClick('Settings')
     },
 ];

@@ -19,6 +19,7 @@ const Login = () => {
         setError("");
         try {
             await logIn(email, password);
+            console.log('Navigating to:', "/dashboard");
             navigate("/dashboard");
         } catch (err) {
             setError(err.message);
