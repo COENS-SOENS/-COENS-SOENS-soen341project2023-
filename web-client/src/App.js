@@ -30,10 +30,9 @@ const App = () => {
 
     <UserAuthContextProvider>
       <Routes>
-        <Route path="Welcome-page" element={<WelcomePage/>} />
+        <Route path="/WelcomePage" element={<WelcomePage/>} />
         <Route path="/sign-in" element={<SignIn/>} />
         <Route path="/sign-up" element={<SignUp/>} />
-       
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
       </Routes>
       </UserAuthContextProvider>
