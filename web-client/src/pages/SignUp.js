@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useUserAuth } from "../firebase/UserAuthContext";
-
+import { firestore } from "../firebase/firebase";
+import { doc, setDoc } from "@firebase/firestore";
 
 import Background from '../assets/office_char.jpg';
 
@@ -11,19 +12,50 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const [password, setPassword] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+
     const { signUp } = useUserAuth();
     let navigate = useNavigate();
-
-    const handleSubmit = async (e) => {
+    let ting = "";
+    const handleSubmit = async (e) => { //handles firebaseUI authentication
         e.preventDefault();
         setError("");
         try {
-            await signUp(email, password);
-            navigate("/dashboard");
+            ting = await signUp(email, password);
+            handleSave();
+            navigate("/home");
         } catch (err) {
             setError(err.message);
         }
     };
+    const handleSave = async (e) => {//handles user storage in firestore
+        const ref = doc(firestore, "Users", ting.user.uid);
+        //const handleSave = async(e) => {
+        //e.preventDefault();//so page doesn;t refresh when save button is clicked
+        //console.log(messageRef.current.value);
+
+        let data = {
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            role: "User",
+            uid: ting.user.uid
+        };
+        setDoc(ref, data)
+            .then(() => {
+                console.log("Document has been added successfully");
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        /* try {
+             addDoc(ref, data)
+         }catch (e) {
+             console.log(e);
+         }*/
+
+    }
 
     return (
         <>
@@ -33,6 +65,20 @@ const Signup = () => {
                     <h2 className="mb-3">Create an account</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Control
+                                type="firstName"
+                                placeholder="First Name"
+                                onChange={(e) => setFirstName(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Control
+                                type="lastName"
+                                placeholder="Last Name"
+                                onChange={(e) => setLastName(e.target.value)}
+                            />
+                        </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Control
                                 type="email"

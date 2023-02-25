@@ -14,14 +14,14 @@ export const SideBar = [
     },
     {
         title: 'My Profile',
-        path: '/',
+        path: '/MyProfile',
         icon: <CgIcons.CgProfile />,
         cName: 'nav-text',  
         handleClick: (onSidebarClick) => onSidebarClick('My Profile')      
     },
     {
         title: 'Dashboard',
-        path: '/',
+        path: '/dashboard',
         icon: <RxIcons.RxDashboard />,
         cName: 'nav-text',
         handleClick: (onSidebarClick) => onSidebarClick('Dashboard')

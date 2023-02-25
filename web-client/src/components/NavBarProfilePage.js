@@ -27,8 +27,6 @@ function NavBarProfilePage({ onSidebarClick }) {
                     <Link to='#' className='menu-bars'>
                         <FaIcons.FaBars onClick={showSidebar} />
                     </Link>
-                    <Link to='/dashboard' onClick={() => onSidebarClick('Dashboard')}>Dashboard</Link>
-                    <Link to='/MyProfile' onClick={() => onSidebarClick('My Profile')}>MyProfile</Link>
                 </div>
                 <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                     <ul className='nav-menu-items' onClick={showSidebar}>
