@@ -13,7 +13,7 @@ import EmployerSignUp from './pages/employerSignUp';
 import { CreateJobListing } from './pages/CreateJobListing';
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from './firebase/firebase';
-
+import PostingsList from './pages/jobcards';
 
 const App = () => {
   const { user } = useUserAuth();
@@ -39,6 +39,8 @@ const App = () => {
         <Route path="/create-job-posting" element={<ProtectedRoute><CreateJobListing/></ProtectedRoute>}/>
         <Route path="/role-selection" element={<RoleSelection/>} />
         <Route path="/employer-sign-up" element={<EmployerSignUp/>} />
+        <Route path="/jobFeed" element={<PostingsList />} />
+
       </Routes>
       </UserAuthContextProvider>
 
