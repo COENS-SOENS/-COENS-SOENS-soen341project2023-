@@ -60,6 +60,7 @@ import { useNavigate } from "react-router-dom";
  export function ListJobsFromUID(){
     const [jobs, setJobs] = useState([]);
     const { user, userRole } = useUserAuth();
+    const navigate = useNavigate();
 
     useEffect(()=>{
         FetchPost();
@@ -78,9 +79,12 @@ import { useNavigate } from "react-router-dom";
             console.log(jobs, newData);
         })
         .catch(error => console.log(error.essage))
-   
+
 
     }
+    const toJobPost=(jobData)=>{
+        navigate('/job-post',{state:{data: jobData}});
+          }
     return (
         <>
         <h1>List of job postings</h1>
@@ -94,7 +98,8 @@ import { useNavigate } from "react-router-dom";
                 </tr>
                 </thead>
                 <tbody>
-            {jobs.map(job => <tr key={job.id}><td>{job.data.Job}</td><td>{job.data.Company}</td><td>${job.data.Salary}</td></tr>)}
+            {jobs.map(job => <tr onClick={() => {toJobPost(job)}}
+            key={job.id}><td>{job.data.Job}</td><td>{job.data.Company}</td><td>${job.data.Salary}</td></tr>)}
             </tbody>
             </table>
         </ul>
