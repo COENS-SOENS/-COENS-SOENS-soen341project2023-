@@ -36,7 +36,8 @@ export const CreateJobListing = () => {
           Company: companyName,
           Salary: salary,
           Job: jobTitle,
-          Description: description
+          Description: description,
+          EmployerUID: user.uid//used to only display postings from active employer
       };
 console.log("data", companyName);
       try {
