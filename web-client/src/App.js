@@ -13,7 +13,8 @@ import EmployerSignUp from './pages/employerSignUp';
 import { CreateJobListing } from './pages/CreateJobListing';
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from './firebase/firebase';
-
+import ContactUs from './pages/contactUs';
+import Testimonial from './Components/Testimonial';
 
 import { JobPost } from './pages/jobPost';
 
@@ -34,15 +35,19 @@ const App = () => {
 
     <UserAuthContextProvider>
       <Routes>
-        <Route path="/" element={<Welcome/>} />
+        <Route path="/" element={<Welcome/>
+      } />
         <Route path="/sign-in" element={<SignIn/>} />
         <Route path="/sign-up" element={<SignUp/>} />
         <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
         <Route path="/create-job-posting" element={<ProtectedRoute><CreateJobListing/></ProtectedRoute>}/>
         <Route path="/role-selection" element={<RoleSelection/>} />
         <Route path="/employer-sign-up" element={<EmployerSignUp/>} />
+        <Route path="/ContactUs" element={<ContactUs/>} />
       </Routes>
       </UserAuthContextProvider>
+ 
+      
 
   </div>
 

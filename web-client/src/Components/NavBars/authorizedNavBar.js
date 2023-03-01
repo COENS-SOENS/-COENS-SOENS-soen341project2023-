@@ -23,7 +23,7 @@ function NavBar() {
           EmployMe
         </Link>
         <ul>
-        <CustomLink to="/create-job-posting">Create Post</CustomLink>
+        <CustomLink to="/create-job-posting"> Create Post</CustomLink>
         <Link to="/" onClick={handleLogOut}> Log Out</Link>
         </ul>
         </nav>
@@ -33,7 +33,7 @@ function NavBar() {
   return (
   <nav className="nav">
     <Link to="/home" className="site-title">
-      EmployMe
+      EmployMe  <i className="fa-solid fa-briefcase" > style={{fontSize:"2em"}}</i>
     </Link>
     <ul>
     <Link to="/" onClick={handleLogOut}> Log Out</Link>
