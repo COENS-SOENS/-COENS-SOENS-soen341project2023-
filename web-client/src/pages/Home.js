@@ -21,7 +21,7 @@ export default function Home() {
     return (
       <>
       <NavBar/>
-      <div>Home</div>
+      <div>Your job postings</div>
       <ListJobsFromUID />
       </>
     )
