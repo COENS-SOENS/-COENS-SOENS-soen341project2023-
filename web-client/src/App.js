@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import Welcome from './pages/Welcome'
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import Home from './pages/home';
+import Home from './pages/Home';
 import { UserAuthContextProvider, useUserAuth } from "./firebase/UserAuthContext";
 import ProtectedRoute from "./firebase/protectedRoute";
 import { RoleSelection } from './pages/roleSelection';
@@ -13,6 +13,8 @@ import EmployerSignUp from './pages/employerSignUp';
 import { CreateJobListing } from './pages/CreateJobListing';
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from './firebase/firebase';
+
+
 import { JobPost } from './pages/jobPost';
 
 const App = () => {
