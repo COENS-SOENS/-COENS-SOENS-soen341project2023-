@@ -41,9 +41,6 @@ const App = () => {
         <Route path="/create-job-posting" element={<ProtectedRoute><CreateJobListing/></ProtectedRoute>}/>
         <Route path="/role-selection" element={<RoleSelection/>} />
         <Route path="/employer-sign-up" element={<EmployerSignUp/>} />
-
-        
-        <Route path="/job-post" element={<ProtectedRoute><JobPost/></ProtectedRoute>}/>
       </Routes>
       </UserAuthContextProvider>
 
