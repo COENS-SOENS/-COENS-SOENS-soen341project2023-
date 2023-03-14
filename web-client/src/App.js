@@ -18,13 +18,14 @@ import ContactUs from './pages/contactUs';
 import Testimonial from './Components/Testimonial';
 import { JobPost } from './pages/jobPost';
 import { DataProvider } from './Components/jobPostContext';
-
+import OneSignal from 'react-onesignal';
 const App = () => {
   //const { user } = useUserAuth();
   //const [error, setError] = useState("");
   // const { userRole } = useUserAuth();//not rlly necessary
 
   useEffect(() => {
+  OneSignal.init({ appId: '2d4c4844-3183-4b4a-b022-12ec6e15d8ed'});
     //should learn this to retrieve data
   }, []);
 

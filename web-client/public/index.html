@@ -26,6 +26,16 @@
     -->
     <title>EmployMe</title>
   </head>
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <script>
+  var OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: '2d4c4844-3183-4b4a-b022-12ec6e15d8ed',
+      // Other OneSignal initialization options can be added here.
+    });
+  });
+  </script>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>

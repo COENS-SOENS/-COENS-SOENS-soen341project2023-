@@ -6,8 +6,11 @@ import { firestore } from "../firebase/firebase";
 import { Button } from "react-bootstrap";
 //import {CV_query} from './CV_query';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import OneSignal from 'react-onesignal';
 
 
+
+// initialize OneSignal. 
 export default function ApplicantQuery(props) {
     const [applicants, setApplicants] = useState([]);
     const { user, userRole } = useUserAuth();
@@ -26,7 +29,7 @@ export default function ApplicantQuery(props) {
     await getDocs(q)
         .then(querySnapshot=>{               
             const newData = querySnapshot.docs.map(doc => ({data:doc.data(),
-            id:doc.id }));
+            id:doc.id, playerId: doc.data() }));
             setApplicants(newData);                
             console.log("applicants",applicants);
         })
@@ -74,6 +77,26 @@ export default function ApplicantQuery(props) {
       });
         //CV_query(uid);
     }
+
+    async function handleCandidateSelected(uid) {
+      
+      const playerDoc = await getDoc(doc(firestore, "Users",uid));
+      const playerId = playerDoc.data().playerId;
+
+      const notification = {
+        contents: {
+          end: 'Congarts'
+        }, 
+        include_player_ids: [playerId]
+      };
+      try {OneSignal.postNotification(notification);
+      }
+       catch(error) {
+        console.log('Error, cannot select candidate')
+      }
+
+      
+    }
   return (
     <>
     <div>applicantQuery</div>
@@ -86,11 +109,19 @@ export default function ApplicantQuery(props) {
                     <th>Name</th>
                     <th>Email</th>
                     <th>CV</th>
+                    <th>Candidate Selection </th>
                 </tr>
                 </thead>
                 <tbody>
             {applicants.map(app => <tr onClick={() => {}}//TBD whether it redirects to a new page
-            key={app.id}><td>{app.data.firstName} {app.data.lastName}</td><td>{app.data.email}</td><td><Button onClick={() => handleCVDownload(app.data.uid)}>view/download CV</Button></td></tr>)}
+            key={app.id}><td>{app.data.firstName} {app.data.lastName}</td><td>{app.data.email}</td><td><Button onClick={() => handleCVDownload(app.data.uid)}>view/download CV</Button>
+            </td>
+
+            <td> <Button onClick={() => handleCandidateSelected(app.data.uid)}>Select Candidate</Button>
+
+            </td>
+
+            </tr>)}
             </tbody>
             </table>
         </ul>
