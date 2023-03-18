@@ -9,8 +9,8 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import OneSignal from 'react-onesignal';
 
 
-
 // initialize OneSignal. 
+OneSignal.init({ appId: '2d4c4844-3183-4b4a-b022-12ec6e15d8ed'});
 export default function ApplicantQuery(props) {
     const [applicants, setApplicants] = useState([]);
     const { user, userRole } = useUserAuth();
@@ -19,6 +19,7 @@ export default function ApplicantQuery(props) {
     console.log("applicant props",props);
     useEffect(()=>{
         FetchPost();
+        fetchApplicants();
     }, [])
     useEffect(() => {
         console.log("JOBS:",applicants)
@@ -78,24 +79,73 @@ export default function ApplicantQuery(props) {
         //CV_query(uid);
     }
 
+    const fetchApplicants = async () => {
+      const q = query(collection(firestore, "Users"), where('uid','in',props.data));
+      const querySnapshot = await getDocs(q);
+      const newData = querySnapshot.docs.map(doc => ({
+        data: doc.data(),
+        id: doc.id
+      }));
+      setApplicants(newData);
+    }
+
     async function handleCandidateSelected(uid) {
-      
-      const playerDoc = await getDoc(doc(firestore, "Users",uid));
+      const playerDoc = await getDoc(doc(firestore, "Users", uid));
       const playerId = playerDoc.data().playerId;
+    
+      // Get the OneSignal player ID for the current user
+      OneSignal.getUserId().then(async function(playerId) {
+        console.log("OneSignal Player ID:", playerId);
+    
+        // Create a new notification object for the selected candidate
+        const candidateNotification = {
+          contents: {
+            en: 'Congratulations! You have been selected as a candidate.'
+          }, 
+          include_player_ids: [playerId]
+        };
+    
+        // Send the notification to the selected candidate
+        try {
+          await fetch('https://onesignal.com/api/v1/notifications', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic MjY5MDgxMzUtMDRiMC00ZTVmLWJiOWUtYmQ5NzFjMjA5MmYw'
+            },
+            body: JSON.stringify(candidateNotification)
+          });
+          console.log('Notification sent to candidate.');
+        } catch(error) {
+          console.log('Error sending notification to candidate:', error);
+        }
+    
+        // Create a new notification object for the employer
+        const employerNotification = {
+          contents: {
+            en: 'A candidate has been selected for the job.'
+          }, 
+          include_player_ids: [playerDoc.data().employerId]
+        };
+    
+        // Send the notification to the employer
+        try {
+          await fetch('https://onesignal.com/api/v1/notifications', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic MjY5MDgxMzUtMDRiMC00ZTVmLWJiOWUtYmQ5NzFjMjA5MmYw'
 
-      const notification = {
-        contents: {
-          end: 'Congarts'
-        }, 
-        include_player_ids: [playerId]
-      };
-      try {OneSignal.postNotification(notification);
-      }
-       catch(error) {
-        console.log('Error, cannot select candidate')
-      }
-
-      
+            },
+            body: JSON.stringify(employerNotification)
+          });
+          console.log('Notification sent to employer.');
+        } catch(error) {
+          console.log('Error sending notification to employer:', error);
+        }
+      }).catch(function(error) {
+        console.log('Error getting OneSignal player ID:', error);
+      });
     }
   return (
     <>
