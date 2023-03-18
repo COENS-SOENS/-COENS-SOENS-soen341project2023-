@@ -21,7 +21,7 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize firebase cloud messaging. 
 export const messaging = getMessaging(app);
-getToken(messaging, {vapidKey:"AAAAJSh2LeI:APA91bHyDjH3FuQMVk1-Oh21La4ZkmfHMukbiHA_3gAot-WNEkIDi2EXAG-Wq2SMocVPtiHDH9CFFC_PyVe8GsX2xl4TfEgqoqabGnBplis1IkS6TVYAbQnUyNjiKaHhMAMkAGRA820p"}).then((currentToken) =>{
+getToken(messaging, {vapidKey:""}).then((currentToken) =>{
   if (currentToken) {
 
   } else {
