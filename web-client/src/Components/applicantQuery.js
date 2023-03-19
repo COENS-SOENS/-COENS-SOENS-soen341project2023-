@@ -2,11 +2,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useUserAuth } from "../firebase/UserAuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
-import { firestore, messaging } from "../firebase/firebase";
+import { firestore, messaging, requestForToken } from "../firebase/firebase";
 import { Button } from "react-bootstrap";
 //import {CV_query} from './CV_query';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-//import 'firebase/compat/messaging';
+import 'firebase/compat/messaging';
+import { getToken } from "firebase/messaging";
 
 
 
@@ -32,7 +33,7 @@ export default function ApplicantQuery(props) {
             setApplicants(newData);                
             console.log("applicants",applicants);
         })
-        .catch(error => console.log(error.essage))
+        .catch(error => console.log(error.message))
 
 
     }
@@ -77,20 +78,20 @@ export default function ApplicantQuery(props) {
         //CV_query(uid);
     }
 
-   function requestPermission() {
-    console.log('Requesting permission...');
-    Notification.requestPermission().then((permission) => {
-      if (permission == 'granted') {
-          console.log('Notification permission granted.');
-      }
-    })
-   }
+    const Notification = () => {
+      requestForToken();
+    }
 
 
+   
+
+
+    /*
     async function handleCandidateSelected(uid) {
       const playerDoc = await getDoc(doc(firestore, "Users", uid));
       const playerId = playerDoc.data().playerId;
     
+      requestPermission();
       // Create a new notification object for the selected candidate
       const candidateNotification = {
         notification: {
@@ -102,6 +103,7 @@ export default function ApplicantQuery(props) {
     
       // Send the notification to the selected candidate
       try {
+        
         await messaging.send(candidateNotification);
         console.log('Notification sent to candidate.');
       } catch(error) {
@@ -124,7 +126,7 @@ export default function ApplicantQuery(props) {
       } catch(error) {
         console.log('Error sending notification to employer:', error);
       }
-    }
+    }*/
 
 
 
@@ -147,8 +149,8 @@ export default function ApplicantQuery(props) {
               {applicants.map(app => <tr onClick={() => {}}//TBD whether it redirects to a new page
               key={app.id}><td>{app.data.firstName} {app.data.lastName}</td><td>{app.data.email}</td><td><Button onClick={() => handleCVDownload(app.data.uid)}>view/download CV</Button>
               </td>
-  
-              <td> <Button onClick={() => handleCandidateSelected(app.data.uid)}>Select Candidate</Button>
+          
+              <td> <Button onClick={() => Notification()}>Select Candidate</Button>
   
               </td>
   
