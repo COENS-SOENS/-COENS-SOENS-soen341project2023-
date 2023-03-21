@@ -11,6 +11,8 @@ import Wrapper from "../assets/wrappers/ProfilePageFormPage";
 import FormRow from "../Components/FormRow"
 import { storage } from "../firebase/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { CandidateContext } from '../Components/CandidateContext';
+import { useContext } from 'react';
 
 export default function MyProfile() {
     const [user, setUser] = useState(null);
@@ -25,6 +27,7 @@ export default function MyProfile() {
     const [city, setCity] = useState("");
     const [resume, setResume] = useState("");
     const [isEditing, setIsEditing] = useState(false);
+    const { selectedCandidate = () => {} } = useContext(CandidateContext) || {};
 
     useEffect(() => {
         onAuthStateChanged(auth, async (user) => {
@@ -164,6 +167,11 @@ export default function MyProfile() {
                             onChange={handleResumeUpload}
                             style={{ display: "none" }} />
                     </label>
+                    {selectedCandidate? (
+                        <Button> Selected</Button>
+                    ) :(
+                        <Button> Not Selected</Button>
+                    )}
                 </form>
             </Wrapper>
         </div>

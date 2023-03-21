@@ -64,19 +64,19 @@ console.log("data ID", id)
   return (
     <>
     <NavBarProfilePage/>
-    <div>Job Post</div>
-    <h1>
+    <div style={{ fontFamily: 'Arial, sans-serif', fontSize: '16px', lineHeight: '1.5', color: '#333333', padding: '20px' }}>Job Post</div>
+    <h1 style={{ fontSize: '24px', fontWeight: 'bold', margin: '0 0 10px 0' }}>
         {data.jobby.data.Job}
         </h1>
-        <h2>
+        <h2 style={{ fontSize: '20px', fontWeight: 'normal', margin: '0 0 10px 0' }}>
         {data.jobby.data.Company}
         </h2>
-        <h3>
+        <h3 style={{ fontSize: '18px', fontWeight: 'normal', margin: '0 0 10px 0' }}>
         ${data.jobby.data.Salary}
         </h3>
-        <h4>
+        <p style={{ fontSize: '16px', fontWeight: 'normal', marginBottom: '20px' }}>
         {data.jobby.data.Description}
-        </h4>
+        </p>
 
 <Button onClick={handleApply}>Apply</Button>
     </>

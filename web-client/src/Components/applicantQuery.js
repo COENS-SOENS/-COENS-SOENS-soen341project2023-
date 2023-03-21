@@ -3,9 +3,10 @@ import { useUserAuth } from "../firebase/UserAuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 //import {CV_query} from './CV_query';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { CandidateContext, CandidateProvider } from "./CandidateContext";
 
 
 export default function ApplicantQuery(props) {
@@ -14,6 +15,12 @@ export default function ApplicantQuery(props) {
     const [jobSelected, setJobSelected] = useState(false);
     const navigate = useNavigate();
     console.log("applicant props",props);
+    const { setSelectedCandidate = () => {} } = useContext(CandidateContext) || {};
+
+    const handleSelectCandidate = (candidateId) => {
+      const Ref = 
+      setSelectedCandidate({candidate:candidateId});
+    }
     useEffect(()=>{
         FetchPost();
     }, [])
@@ -74,27 +81,47 @@ export default function ApplicantQuery(props) {
       });
         //CV_query(uid);
     }
-  return (
-    <>
-    <div>applicantQuery</div>
-    <>
-        <h1>Applicants</h1>
-        <ul>
-            <table class="styled-table">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>CV</th>
-                </tr>
-                </thead>
-                <tbody>
-            {applicants.map(app => <tr onClick={() => {}}//TBD whether it redirects to a new page
-            key={app.id}><td>{app.data.firstName} {app.data.lastName}</td><td>{app.data.email}</td><td><Button onClick={() => handleCVDownload(app.data.uid)}>view/download CV</Button></td></tr>)}
-            </tbody>
-            </table>
-        </ul>
-        </>
-    </>
-  )
+
+
+
+
+    return (
+      <>
+          <div>applicantQuery </div>
+          <>
+              <h1>Applicants</h1>
+              <ul>
+                  <Table striped bordered hover responsive>
+                      <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Email</th>
+                              <th>CV</th>
+                              <th>Candidate Selection</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {applicants.map((app) => (
+                              <tr onClick={() => {}} key={app.id}>
+                                  <td>{app.data.firstName} {app.data.lastName}</td>
+                                  <td>{app.data.email}</td>
+                                  <td><Button onClick={() => handleCVDownload(app.data.uid)}>view/download CV</Button></td>
+                                  <td><Button onClick={() => handleSelectCandidate(app.data.uid)}>Select Candidate</Button></td>
+                              </tr>
+                          ))}
+                      </tbody>
+                  </Table>
+              </ul>
+          </>
+      </>
+  );
+  
+}
+export function ApplicantPage(props) {
+  return(
+    <CandidateProvider>
+      <div>applicantQuery</div>
+      <applicantQuery {...props} />
+    </CandidateProvider>
+  );
 }

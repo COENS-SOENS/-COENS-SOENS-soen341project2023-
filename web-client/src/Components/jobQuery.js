@@ -6,6 +6,8 @@ import { useUserAuth } from "../firebase/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import { JobPost } from "../pages/jobPost";
 import { DataContext } from "./jobPostContext";
+import { CandidateContext } from '../Components/CandidateContext';
+import { Button } from 'react-bootstrap';
 
 
  export default function ListAllJobs(){
@@ -13,6 +15,8 @@ import { DataContext } from "./jobPostContext";
     const [jobs, setJobs] = useState([]);
     const {data, setData} = useContext(DataContext);
     const navigate = useNavigate();
+    const { selectedCandidate = () => {} } = useContext(CandidateContext) || {};
+
     //const Navigation = useNavigation();
     useEffect(()=>{
         FetchPost();
@@ -50,6 +54,11 @@ import { DataContext } from "./jobPostContext";
                     <th>Title</th>
                     <th>Company</th>
                     <th>Salary</th>
+                    {selectedCandidate? (
+                        <Button> Selected</Button>
+                    ) :(
+                        <Button> Not Selected</Button>
+                    )}
                 </tr>
                 </thead>
                 <tbody>
