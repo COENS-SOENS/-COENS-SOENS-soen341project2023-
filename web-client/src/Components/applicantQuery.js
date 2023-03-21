@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import 'firebase/compat/messaging';
 import { getToken } from "firebase/messaging";
+//import Notification  from "./Notification";
 
 
 
@@ -78,9 +79,7 @@ export default function ApplicantQuery(props) {
         //CV_query(uid);
     }
 
-    const Notification = () => {
-      requestForToken();
-    }
+
 
 
    
@@ -128,6 +127,9 @@ export default function ApplicantQuery(props) {
       }
     }*/
 
+    const Notification = () => {
+      requestForToken();
+    }
 
 
   return (

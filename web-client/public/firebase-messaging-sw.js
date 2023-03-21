@@ -1,3 +1,5 @@
+import { messaging } from "../src/firebase/firebase";
+
 importScripts('https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.1.3/firebase-messaging-compat.js');
 
@@ -10,17 +12,13 @@ const firebaseConfig = {
     appId: process.env.REACT_APP_FIREBASE_APPID,
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
   };
-
-firebase.intializeApp(firebaseConfig);
-
+firebaseConfig.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
-messaging.onBackgroundMessage(function(payload) {
+messaging.onBackrgoundMessage(function(payload){
     console.log('Received background message', payload);
-
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
         body: payload.notification.body,
     };
-    self.ServiceWorkerRegistration.showNotification(notificationTitle,
-        notificationOptions);
+    self.ServiceWorkerRegistration.showNotification(notificationTitle,notificationOption);
 });
