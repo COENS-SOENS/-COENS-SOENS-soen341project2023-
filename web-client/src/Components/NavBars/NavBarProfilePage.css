@@ -99,6 +99,7 @@ body {
     top: 0;
     left: -250px;
     transition: all 0.5s ease;
+    z-index: 2;
 }
 
 .nav-menu-sidebar.active {

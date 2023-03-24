@@ -3,7 +3,7 @@ import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import {firestore} from "../firebase/firebase";
 import { useUserAuth } from "../firebase/UserAuthContext";
-import { addDoc, collection } from "@firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "@firebase/firestore";
 import NavBar from '../Components/NavBars/authorizedNavBar'
 import { useNavigate} from 'react-router-dom';
 
@@ -39,14 +39,26 @@ const formatter = new Intl.NumberFormat('en-US', {
 
       let data = {
           Company: companyName,
-          Salary: formatter.format(salary),
+          Salary: formatter.format(parseFloat(salary.replace(/\D/g,''))),
           Job: jobTitle,
           Description: description,
-          EmployerUID: user.uid//used to only display postings from active employer
-      };
+          EmployerUID: user.uid,//used to only display postings from active employer
+          jobID: ref.id
+        };
 console.log("data", companyName);
       try {
-          addDoc(ref, data);
+          const new_doc = addDoc(ref, data);
+          const userRef = doc(firestore, "Postings", (await new_doc).id)
+          let data2 = {
+            Company: companyName,
+            Salary: formatter.format(parseFloat(salary.replace(/\D/g,''))),
+            Job: jobTitle,
+            Description: description,
+            EmployerUID: user.uid,//used to only display postings from active employer
+            jobID: userRef.id
+          };
+          await updateDoc(userRef, data2);
+          //const res = await new_doc.update({jobID: (await new_doc).id});
           
       }catch (e) {
           console.log(e);

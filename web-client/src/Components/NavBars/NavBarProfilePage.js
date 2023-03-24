@@ -3,6 +3,7 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { SideBar } from './SideBar';
+import { AdminSideBar } from './AdminSideBar';
 import './NavBarProfilePage.css';
 import { IconContext } from 'react-icons';
 import { useUserAuth } from '../../firebase/UserAuthContext';
@@ -59,16 +60,7 @@ export default function NavBarProfilePage({ onSidebarClick }) {
                                     <AiIcons.AiOutlineClose />
                                 </Link>
                             </li>
-                            {SideBar.map((item, index) => {
-                                return (
-                                    <li key={index} className={item.cName} >
-                                        <Link to={item.path}>
-                                            {item.icon}
-                                            <span>{item.title}</span>
-                                        </Link>
-                                    </li>
-                                );
-                            })}
+                            <SideBar userRole={userRole}/>
                         </ul>
                     </nav>
                 </IconContext.Provider>
@@ -100,7 +92,38 @@ export default function NavBarProfilePage({ onSidebarClick }) {
                                     <AiIcons.AiOutlineClose />
                                 </Link>
                             </li>
-                            {SideBar.map((item, index) => {
+                            <SideBar userRole={userRole}/>
+                        </ul>
+                    </nav>
+                </IconContext.Provider>
+            </>
+        );
+    } else if(userRole === "Admin"){
+        return (
+            <>
+                <IconContext.Provider value={{ color: 'white' }}>
+                    <div className='nav'>
+                        <div className='navBarProfilePage'>
+                            <Link to='#' className='menu-bars'>
+                                <FaIcons.FaBars onClick={showSidebar} />
+                            </Link>
+                        </div>
+                        <div className='nav'>
+                            <ul>
+                                <Link to='/' onClick={handleLogOut}>
+                                    Log Out
+                                </Link>
+                            </ul>
+                        </div>
+                    </div>
+                    <nav className={sidebar ? 'nav-menu-sidebar active' : 'nav-menu-sidebar'}>
+                        <ul className='nav-menu-sidebar-items' onClick={showSidebar}>
+                            <li className='navbar-toggle'>
+                                <Link to='#' className='menu-bars'>
+                                    <AiIcons.AiOutlineClose />
+                                </Link>
+                            </li>
+                            {AdminSideBar.map((item, index) => {
                                 return (
                                     <li key={index} className={item.cName} >
                                         <Link to={item.path}>

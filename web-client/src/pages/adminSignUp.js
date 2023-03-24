@@ -6,10 +6,10 @@ import { useUserAuth } from "../firebase/UserAuthContext";
 import NavBar from "../Components/NavBars/welcomePageNavBar";
 import { firestore } from "../firebase/firebase";
 import { doc, setDoc } from "@firebase/firestore";
-
 import Background from '../assets/office_char.jpg';
 
-const Signup = () => {
+const AdminSignUp = () => {
+
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const [password, setPassword] = useState("");
@@ -18,44 +18,39 @@ const Signup = () => {
     const { signUp } = useUserAuth();
     let navigate = useNavigate();
     let ting = "";
-    
+
     const handleSubmit = async (e) => { //handles firebaseUI authentication
         e.preventDefault();
         setError("");
         try {
             ting = await signUp(email, password);
-            await handleSave(ting);
+            
+            await handleSave();
             navigate("/Home");
+
+           
         } catch (err) {
             setError(err.message);
         }
     };
-    const handleSave = async (user) => {//handles user storage in firestore
+    const handleSave = async (e) => {
         const ref = doc(firestore, "Users", ting.user.uid);
-
+        
         let data = {
             email: email,
             firstName: firstName,
             lastName: lastName,
-            selectedCountry: "default",
-            address: "default",
-            city: "default",
-            province: "default",
-            country: "default",
-            role: "User",
-            resume:"default",
+            role: "Admin",
             uid: ting.user.uid
         };
         await setDoc(ref, data)
-            .then(() => {
-                console.log("Document has been added successfully");
-            })
-            .catch(error => {
-                console.log(error);
-            })
-   
-    }
-
+        .then(() => {
+            console.log("Document has been added successfully");
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    };
     return (
         <>
             <NavBar />
@@ -105,12 +100,10 @@ const Signup = () => {
                     <div className="p-4 box mt-3 text-center">Already have an account? <Link to="/sign-in">Log In</Link>
                     </div>
                 </div>
-
-
             </div>
 
         </>
     );
 };
 
-export default Signup;
+export default AdminSignUp;

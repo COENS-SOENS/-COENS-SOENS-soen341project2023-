@@ -2,7 +2,7 @@ body {
     margin-top: 20px;
     color: #1a202c;
     text-align: left;
-    background-color: #e2e8f0;
+    background-color: #ffff;
 }
 
 .main-body {
@@ -48,7 +48,7 @@ body {
 }
 
 .bg-gray-300 {
-    background-color: #e2e8f0;
+    background-color: #ffff;
 }
 
 .h-100 {
@@ -61,7 +61,10 @@ body {
 
 .avatar-container {
     display: flex;
+    position: relative;
     align-items: center;
+    max-width: 200px;
+    max-height: 200px;
     margin-bottom: 5px;
 }
 
@@ -86,4 +89,16 @@ body {
 .form-row input {
     width: calc(100% - 160px);
     /* Calculate the width of the input field */
+}
+
+.avatar-container .logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 300px;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    z-index: 1;
+    
 }
