@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useUserAuth } from "../firebase/UserAuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 import { Button, Table } from "react-bootstrap";
 //import {CV_query} from './CV_query';
@@ -17,10 +17,12 @@ export default function ApplicantQuery(props) {
     console.log("applicant props",props);
     const { setSelectedCandidate = () => {} } = useContext(CandidateContext) || {};
 
-    const handleSelectCandidate = (candidateId) => {
+    const handleSelectCandidate = (jobId,candidateId) => {
       const Ref = 
-      setSelectedCandidate({candidate:candidateId});
+      setSelectedCandidate({job:jobId,candidate:candidateId});
     }
+
+  
     useEffect(()=>{
         FetchPost();
     }, [])
@@ -28,12 +30,15 @@ export default function ApplicantQuery(props) {
         console.log("JOBS:",applicants)
 
     },[applicants])
+
     const FetchPost = async () => {
     const q = query(collection(firestore, "Users"), where('uid', 'in', props.data));
     await getDocs(q)
         .then(querySnapshot=>{               
-            const newData = querySnapshot.docs.map(doc => ({data:doc.data(),
-            id:doc.id }));
+            const newData = querySnapshot.docs.map(doc => ({
+              data:doc.data(),
+              id:doc.id,
+              jobId: doc.data().jobId}));
             setApplicants(newData);                
             console.log("applicants",applicants);
         })
@@ -106,7 +111,7 @@ export default function ApplicantQuery(props) {
                                   <td>{app.data.firstName} {app.data.lastName}</td>
                                   <td>{app.data.email}</td>
                                   <td><Button onClick={() => handleCVDownload(app.data.uid)}>view/download CV</Button></td>
-                                  <td><Button onClick={() => handleSelectCandidate(app.data.uid)}>Select Candidate</Button></td>
+                                  <td><Button onClick={() => handleSelectCandidate(app.jobId,app.data.uid)}>Select Candidate</Button></td>
                               </tr>
                           ))}
                       </tbody>

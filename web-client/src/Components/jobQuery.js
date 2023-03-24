@@ -10,13 +10,16 @@ import { CandidateContext } from '../Components/CandidateContext';
 import { Button } from 'react-bootstrap';
 
 
+
  export default function ListAllJobs(){
     const [jobSelected, setJobSelected] = useState(false);
     const [jobs, setJobs] = useState([]);
     const {data, setData} = useContext(DataContext);
     const navigate = useNavigate();
     const { selectedCandidate = () => {} } = useContext(CandidateContext) || {};
+    const { user } = useUserAuth();
 
+    const [employerSelection, setEmployerSelection] = useState({})
     //const Navigation = useNavigation();
     useEffect(()=>{
         FetchPost();
@@ -39,37 +42,67 @@ import { Button } from 'react-bootstrap';
 
     }
     
+    
     const toJobPost=(jobData)=>{
         setData({jobby:jobData});
         setJobSelected(true);
         navigate('/job-post');
-          }
-              return (
+      }
+      
+      return (
         <>
-        <h1>List of job postings</h1>
-        <ul>
+          <h1>List of job postings</h1>
+          <ul>
             <table class="styled-table">
-                <thead>
+              <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Company</th>
-                    <th>Salary</th>
-                    {selectedCandidate? (
-                        <Button> Selected</Button>
-                    ) :(
-                        <Button> Not Selected</Button>
-                    )}
+                  <th>Title</th>
+                  <th>Company</th>
+                  <th>Salary</th>
+                  <th>Status</th>
                 </tr>
-                </thead>
-                <tbody>
-            {jobs.map(job => <tr onClick={() => {toJobPost(job)}}
-                 key={job.id}><td>{job.data.Job}</td><td>{job.data.Company}</td><td>${job.data.Salary}</td></tr>)}
-            </tbody>
+              </thead>
+              <tbody>
+                {jobs.map((job) => {
+                  const isApplied = job.data.applicants && job.data.applicants[user.uid];
+                  const isSelected = employerSelection[job.id];
+                  let status = '';
+                  let buttonVariant = '';
+      
+                  if (isApplied && isSelected) {
+                    status = 'Selected';
+                    buttonVariant = 'success';
+                  } else if (isApplied && !isSelected) {
+                    status = 'Applied';
+                    buttonVariant = 'warning';
+                  } else {
+                    status = 'Not Applied';
+                    buttonVariant = 'danger';
+                  }
+      
+                  return (
+                    <tr onClick={() => toJobPost(job)} key={job.id}>
+                      <td>{job.data.Job}</td>
+                      <td>{job.data.Company}</td>
+                      <td>${job.data.Salary}</td>
+                      <td>
+                      {selectedCandidate ? (
+                    <Button> Selected</Button>
+                  ) : (
+                    <Button> Not Selected</Button>
+                  )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>   
             </table>
-        </ul>
+          </ul>
         </>
-    )
+      )
+      
  }
+
 
  //------------------------------------------------------------------------------------------------------------------------
 
