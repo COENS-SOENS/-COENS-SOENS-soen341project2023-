@@ -37,8 +37,7 @@ export default function ApplicantQuery(props) {
         .then(querySnapshot=>{               
             const newData = querySnapshot.docs.map(doc => ({
               data:doc.data(),
-              id:doc.id,
-              jobId: doc.data().jobId}));
+              id:doc.id }));
             setApplicants(newData);                
             console.log("applicants",applicants);
         })
