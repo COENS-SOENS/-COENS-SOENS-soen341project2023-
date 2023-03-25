@@ -110,7 +110,8 @@ import { Button } from 'react-bootstrap';
     await getDocs(q)
         .then(querySnapshot=>{               
             const newData = querySnapshot.docs.map(doc => ({data:doc.data(),
-            id:doc.id }));
+            id:doc.id,
+            jobId:doc.jobId }));
             setJobs(newData);                
             //console.log(jobs, newData);
         })
