@@ -64,34 +64,19 @@ import { Button } from 'react-bootstrap';
               </thead>
               <tbody>
                 {jobs.map((job) => {
-                  const isApplied = job.data.applicants && job.data.applicants[user.uid];
-                  const isSelected = employerSelection[job.id];
-                  let status = '';
-                  let buttonVariant = '';
-      
-                  if (isApplied && isSelected) {
-                    status = 'Selected';
-                    buttonVariant = 'success';
-                  } else if (isApplied && !isSelected) {
-                    status = 'Applied';
-                    buttonVariant = 'warning';
-                  } else {
-                    status = 'Not Applied';
-                    buttonVariant = 'danger';
-                  }
+                  
       
                   return (
                     <tr onClick={() => toJobPost(job)} key={job.id}>
                       <td>{job.data.Job}</td>
                       <td>{job.data.Company}</td>
-                      <td>${job.data.Salary}</td>
-                      <td>
-                      {selectedCandidate ? (
-                    <Button> Selected</Button>
+                      <td>{job.data.Salary}</td>
+                      {selectedCandidate && selectedCandidate(job.jobId)? (
+                    <Button > Selected</Button>
                   ) : (
-                    <Button> Not Selected</Button>
+                    <Button > Not Selected</Button>
                   )}
-                      </td>
+
                     </tr>
                   );
                 })}

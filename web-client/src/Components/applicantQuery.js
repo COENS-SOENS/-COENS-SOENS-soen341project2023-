@@ -29,22 +29,39 @@ export default function ApplicantQuery(props) {
     },[applicants])
 
     const FetchPost = async () => {
-    const q = query(collection(firestore, "Users"), where('uid', 'in', props.data));
+    const q = query(collection(firestore, "Users"), where('uid', 'in', props.data ?? []));
     await getDocs(q)
-        .then(querySnapshot=>{               
+        .then(querySnapshot=>{                
             const newData = querySnapshot.docs.map(doc => ({
               data:doc.data(),
               id:doc.id,
-              jobId: doc.jobId}));
+              jobId: doc.jobId,
+              applicants:doc.data().applicants?.map(applicants => ({
+                uid: applicants.uid,
+                selected: applicants.selected
+              })) ?? []
+            }));
             setApplicants(newData);                
-            console.log("applicants",applicants);
+            console.log("applicants",newData) 
+            console.log("querySnapshot",querySnapshot.docs)  
         })
-        .catch(error => console.log(error.essage))
+        .catch(error => console.log(error.message))
+        
 
     }
-         const handleSelectCandidate = (jobId,candidateId) => {
-      const Ref = 
-      setSelectedCandidate({jobId:jobId,candidate:candidateId});
+    useEffect(() => {
+      console.log("applicants", applicants);
+    }, [applicants])
+         const handleSelectCandidate = async (candidateId) => {
+          const Reference = doc(firestore, "Postings", props.jobId)
+          await updateDoc(Reference, {
+            applicants: {
+              [candidateId]: {
+                selected: true
+              }
+            }
+          })
+          setSelectedCandidate({jobId:props.jobId,candidate:candidateId});
     }
     async function handleCVDownload(uid) {
         console.log("DOWNLOAD_UID", uid);
@@ -92,40 +109,53 @@ export default function ApplicantQuery(props) {
 
     return (
       <>
-          <div>applicantQuery </div>
-          <>
-              <h1>Applicants</h1>
-              <ul>
-                  <Table striped bordered hover responsive>
-                      <thead>
-                          <tr>
-                              <th>Name</th>
-                              <th>Email</th>
-                              <th>CV</th>
-                              <th>Candidate Selection</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          {applicants.map((app) => (
-                              <tr onClick={() => {}} key={app.id}>
-                                  <td>{app.data.firstName} {app.data.lastName}</td>
-                                  <td>{app.data.email}</td>
-                                  <td><Button onClick={() => handleCVDownload(app.data.uid)}>view/download CV</Button></td>
-                                  <td><Button onClick={() => handleSelectCandidate(app.jobId,app.data.uid)}>Select Candidate</Button></td>
-                              </tr>
-                          ))}
-                      </tbody>
-                  </Table>
-              </ul>
-          </>
+        <div>ApplicantQuery jobId={doc.jobId} data={applicants} </div>
+        <>
+          <h1>Applicants</h1>
+          {applicants.length === 0 ? (
+            <p>No applicants found</p>
+          ) : (
+            <Table striped bordered hover responsive>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>CV</th>
+                  <th>Candidate Selection</th>
+                </tr>
+              </thead>
+              <tbody>
+                {applicants.map((app) => (
+                  <tr onClick={() => {}} key={app.id}>
+                    <td>
+                      {app.data.firstName} {app.data.lastName}
+                    </td>
+                    <td>{app.data.email}</td>
+                    <td>
+                      <Button onClick={() => handleCVDownload(app.data.uid)}>
+                        view/download CV
+                      </Button>
+                    </td>
+                    <td>
+                      <Button
+                        onClick={() => handleSelectCandidate(app.jobId, app.data.uid)}
+                      >
+                        Select Candidate
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </>
       </>
-  );
-  
-}
+    );
+  }
 export function ApplicantPage(props) {
   return(
     <CandidateProvider>
-      <div>applicantQuery</div>
+      <div>ApplicantQuery data ={props.data}</div>
       <applicantQuery {...props} />
     </CandidateProvider>
   );
