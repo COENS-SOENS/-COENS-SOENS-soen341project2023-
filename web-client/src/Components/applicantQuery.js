@@ -17,10 +17,7 @@ export default function ApplicantQuery(props) {
     console.log("applicant props",props);
     const { setSelectedCandidate = () => {} } = useContext(CandidateContext) || {};
 
-    const handleSelectCandidate = (jobId,candidateId) => {
-      const Ref = 
-      setSelectedCandidate({job:jobId,candidate:candidateId});
-    }
+
 
   
     useEffect(()=>{
@@ -37,13 +34,17 @@ export default function ApplicantQuery(props) {
         .then(querySnapshot=>{               
             const newData = querySnapshot.docs.map(doc => ({
               data:doc.data(),
-              id:doc.id }));
+              id:doc.id,
+              jobId: doc.jobId}));
             setApplicants(newData);                
             console.log("applicants",applicants);
         })
         .catch(error => console.log(error.essage))
 
-
+    }
+         const handleSelectCandidate = (jobId,candidateId) => {
+      const Ref = 
+      setSelectedCandidate({jobId:jobId,candidate:candidateId});
     }
     async function handleCVDownload(uid) {
         console.log("DOWNLOAD_UID", uid);
